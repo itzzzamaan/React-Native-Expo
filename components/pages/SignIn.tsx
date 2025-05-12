@@ -36,6 +36,7 @@ const SignIn = () => {
   };
 
   const handleLogin = async () => {
+    navigation.navigate('homescreen')
     if (!email || !password) {
       setError("Please fill in all fields");
       return;
@@ -142,7 +143,7 @@ const SignIn = () => {
               </View>
 
               {/* Forgot password */}
-              <TouchableOpacity style={styles.forgot}>
+              <TouchableOpacity style={styles.forgot} onPress={(e)=>navigation.navigate('forgot-password')}>
                 <Text style={styles.forgotText}>Forgot password?</Text>
               </TouchableOpacity>
             </ScrollView>
@@ -158,7 +159,7 @@ const SignIn = () => {
                   Don’t Have an Account?{" "}
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("Auth/Signup" as never)}
+                  onPress={() => navigation.navigate('signup')}
                 >
                   <Text style={styles.signupText}>Sign Up</Text>
                 </TouchableOpacity>

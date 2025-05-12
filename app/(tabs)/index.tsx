@@ -1,21 +1,19 @@
 import React, { useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ImageBackground,
-  TouchableOpacity,
   Dimensions,
-  StatusBar,
   Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import gradientOverlay from '../../assets/images/gradientOverlay.png';
 import splashImg1 from "../../assets/images/splashImg1.jpg";
 import splashImg2 from "../../assets/images/splashImg2.png";
 import splashImg3 from "../../assets/images/splashImg3.jpg";
-import gradientOverlay from '../../assets/images/gradientOverlay.png'; 
+import StackNavigation from '../../components/navigation/StackNavigation';
 
 const { width, height } = Dimensions.get('window');
 
@@ -80,7 +78,7 @@ export default function SplashCarousel() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
+      {/* <StatusBar barStyle="light-content" />
       <FlatList
         ref={flatListRef}
         horizontal
@@ -101,7 +99,8 @@ export default function SplashCarousel() {
             style={[styles.dot, currentIndex === index && styles.activeDot]}
           />
         ))}
-      </View>
+      </View> */}
+      <StackNavigation/>
     </SafeAreaView>
   );
 }

@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "expo-router";
 // import {  } from "react-native-scale";  // <-- react-native-scale
 
 const { width } = Dimensions.get("window");
@@ -25,6 +26,7 @@ const scale = (size) => {
 export default function SignUpScreen() {
   const [securePass, setSecurePass] = useState(true);
   const [secureConfirm, setSecureConfirm] = useState(true);
+  const navigation = useNavigation()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -133,7 +135,7 @@ export default function SignUpScreen() {
             </TouchableOpacity>
             <Text style={styles.bottomText}>
               Already Have an Account?{' '}
-              <Text style={styles.signinText}>Sign In</Text>
+              <Text style={styles.signinText} onPress={(e)=>navigation.navigate('login')}>Sign In</Text>
             </Text>
             </View>
 

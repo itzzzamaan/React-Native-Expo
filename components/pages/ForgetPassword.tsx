@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
 const TEXT_SCALE = 0.8733;
@@ -24,11 +25,12 @@ const scale = (size) => {
 export default function ForgetPassword() {
   const [countryCode, setCountryCode] = useState('IN+91');
   const [mobile, setMobile] = useState('');
-
+  const navigation = useNavigation()
   const handleBack = () => {
     console.log('Go back');
   };
   const handleSendOtp = () => {
+    navigation.navigate('verify-otp')
     console.log('Send OTP to', countryCode, mobile);
   };
   const handleSelectCode = () => {
