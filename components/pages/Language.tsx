@@ -64,95 +64,96 @@ import {
     View,
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
+import i18n from '../i18n/i18n'; // adjust path as needed
+import '../i18n/i18n';
+import { useTranslation } from 'react-i18next';
 
 const languages = [
+  { name: 'English', code: 'en', flag: 'https://flagcdn.com/w320/us.png' },
+  { name: 'Arabic', code: 'ar', flag: 'https://flagcdn.com/w320/sa.png' },
     { name: 'Tongan', flag: 'https://flagcdn.com/w320/to.png' },
     { name: 'French', flag: 'https://flagcdn.com/w320/fr.png' }, // Correct French flag
     { name: 'Mandarin Chinese', flag: 'https://flagcdn.com/w320/cn.png' },
     { name: 'Japanese', flag: 'https://flagcdn.com/w320/jp.png' },
     { name: 'Samoan', flag: 'https://flagcdn.com/w320/ws.png' },
-    { name: 'Arabic', flag: 'https://flagcdn.com/w320/sy.png' },
+  
     // { name: 'French', flag: 'https://flagcdn.com/w320/fr.png' }, // Duplicate French (as in the screenshot)
   ];  
 
-const LanguageSelectionScreen = () => {
-   
+  const LanguageSelectionScreen = () => {
     const navigation = useNavigation();
-
-  const [selected, setSelected] = useState<string | null>('Samoan');
-  const [searchText, setSearchText] = useState('');
-
-  const filteredLanguages = languages.filter(lang =>
-    lang.name.toLowerCase().includes(searchText.toLowerCase())
-  );
-
-  return (
-    <View style={styles.container}>
-      {/* Top Globe Icon */}
-      <View style={styles.iconContainer}>
-        <View style={styles.iconCircle}>
-          <Icon name="language" type="font-awesome" size={28} color="#000" />
+    const { t } = useTranslation();
+    const [selected, setSelected] = useState<string>('en');
+    const [searchText, setSearchText] = useState('');
+  
+    const filteredLanguages = languages.filter(lang =>
+      lang.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+  
+    const handleContinue = () => {
+      i18n.changeLanguage(selected);
+      navigation.navigate('SplashCarousel');
+    };
+  
+    return (
+      <View style={styles.container}>
+        <View style={styles.iconContainer}>
+          <View style={styles.iconCircle}>
+            <Icon name="language" type="font-awesome" size={28} color="#000" />
+          </View>
         </View>
-      </View>
-
-      {/* Title */}
-      <Text style={styles.title}>Select Language</Text>
-
-      {/* Search */}
-      <View style={styles.searchContainer}>
-        <Icon name="search" size={18} color="#aaa" style={{ marginRight: 8 }} />
-        <TextInput
-          placeholder="Search Languages"
-          placeholderTextColor="#aaa"
-          style={styles.searchInput}
-          value={searchText}
-          onChangeText={setSearchText}
+  
+        <Text style={styles.title}>{t('select_language')}</Text>
+  
+        <View style={styles.searchContainer}>
+          <Icon name="search" size={18} color="#aaa" style={{ marginRight: 8 }} />
+          <TextInput
+            placeholder={t('search_languages')}
+            placeholderTextColor="#aaa"
+            style={styles.searchInput}
+            value={searchText}
+            onChangeText={setSearchText}
+          />
+        </View>
+  
+        <Text style={styles.allLang}>{t('all_languages')}</Text>
+  
+        <FlatList
+          data={filteredLanguages}
+          keyExtractor={(item, index) => item.code + index}
+          renderItem={({ item }) => {
+            const isSelected = selected === item.code;
+            return (
+              <TouchableOpacity
+                style={[
+                  styles.languageItem,
+                  isSelected && styles.languageSelected,
+                ]}
+                onPress={() => setSelected(item.code)}
+              >
+                <View style={styles.langRow}>
+                  <Image source={{ uri: item.flag }} style={styles.flag} />
+                  <Text style={styles.langText}>{item.name}</Text>
+                </View>
+                {isSelected && (
+                  <Icon name="check" type="feather" color="#000" size={18} />
+                )}
+              </TouchableOpacity>
+            );
+          }}
+        />
+  
+        <Button
+          title={t('continue')}
+          buttonStyle={styles.continueButton}
+          titleStyle={styles.continueText}
+          onPress={handleContinue}
         />
       </View>
-
-      {/* All Languages Label */}
-      <Text style={styles.allLang}>All Languages</Text>
-
-      {/* Language List */}
-      <FlatList
-        data={filteredLanguages}
-        keyExtractor={(item, index) => item.name + index}
-        renderItem={({ item }) => {
-          const isSelected = selected === item.name;
-          return (
-            <TouchableOpacity
-              style={[
-                styles.languageItem,
-                isSelected && styles.languageSelected,
-              ]}
-              onPress={() => setSelected(item.name)}
-            >
-              <View style={styles.langRow}>
-                {/* <Image source={item.flag} style={styles.flag} /> */}
-                <Image source={{ uri: item.flag }} style={styles.flag} />
-                <Text style={styles.langText}>{item.name}</Text>
-              </View>
-              {isSelected && (
-                <Icon name="check" type="feather" color="#000" size={18} />
-              )}
-            </TouchableOpacity>
-          );
-        }}
-      />
-
-      {/* Continue Button */}
-      <Button
-        title="Continue"
-        buttonStyle={styles.continueButton}
-        titleStyle={styles.continueText}
-        // onPress={() => console.log('Selected Language:', selected)}
-        onPress={() => navigation.navigate('SplashCarousel')}
-      />
-    </View>
-  );
-};
-
-export default LanguageSelectionScreen;
+    );
+  };
+  
+  export default LanguageSelectionScreen;
 
 const styles = StyleSheet.create({
   container: {
